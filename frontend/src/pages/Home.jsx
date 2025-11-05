@@ -60,66 +60,92 @@ const Home = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Produtos</h1>
-
-      {/* Search and Filter */}
-      <div className="mb-8 space-y-4">
-        <form onSubmit={handleSearch} className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Buscar produtos..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
-          >
-            Buscar
-          </button>
-        </form>
-
-        <div className="flex gap-2 flex-wrap">
-          <button
-            onClick={() => setCategory('')}
-            className={`px-4 py-2 rounded-lg transition ${
-              category === ''
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 hover:bg-gray-300'
-            }`}
-          >
-            Todos
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={`px-4 py-2 rounded-lg transition ${
-                category === cat
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-orange-600 via-red-600 to-orange-500 text-white py-16 mb-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+              💪 Suplementos de Alta Qualidade
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-orange-100">
+              Transforme seu corpo e alcance seus objetivos
+            </p>
+            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Buscar produtos..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="flex-1 px-6 py-4 rounded-lg text-gray-800 focus:outline-none focus:ring-4 focus:ring-orange-300 text-lg"
+                />
+                <button
+                  type="submit"
+                  className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 shadow-lg"
+                >
+                  Buscar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
-      {/* Products Grid */}
-      {products.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-xl">Nenhum produto encontrado</p>
+      <div className="container mx-auto px-4 py-8">
+        {/* Categories Filter */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-gray-800">Categorias</h2>
+          <div className="flex gap-3 flex-wrap">
+            <button
+              onClick={() => setCategory('')}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                category === ''
+                  ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+              }`}
+            >
+              Todos os Produtos
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  category === cat
+                    ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg scale-105'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
-      )}
+
+        {/* Products Grid */}
+        {products.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🔍</div>
+            <p className="text-gray-500 text-xl font-semibold">Nenhum produto encontrado</p>
+            <p className="text-gray-400 mt-2">Tente buscar por outra categoria ou termo</p>
+          </div>
+        ) : (
+          <>
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold text-gray-800">
+                {category ? `Produtos em ${category}` : 'Todos os Produtos'}
+                <span className="text-orange-600 ml-2">({products.length})</span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
