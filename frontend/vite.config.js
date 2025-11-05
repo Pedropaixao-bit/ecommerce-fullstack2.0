@@ -7,7 +7,9 @@ import react from '@vitejs/plugin-react';
 // Se for root (username.github.io), use '/'
 export default defineConfig({
   plugins: [react()],
-  base: '/suplementos/', // Ajuste conforme necessário
+  // Em Vercel, o app é servido na raiz do domínio, então o base deve ser '/'
+  // ou simplesmente omitido. Manter explícito para evitar confusão.
+  base: '/',
   build: {
     outDir: 'dist',
     sourcemap: false
