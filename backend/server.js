@@ -12,10 +12,25 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://yourusername.github.io',
+// CORS: permite domínio principal e previews da Vercel (*.vercel.app)
+const allowedOrigins = [
+  process.env.FRONTEND_URL || '',
+  process.env.FRONTEND_URL_2 || ''
+].filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Requests sem origin (ex.: health checks) são permitidas
+    if (!origin) return callback(null, true);
+    const isAllowed =
+      allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin);
+    if (isAllowed) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
